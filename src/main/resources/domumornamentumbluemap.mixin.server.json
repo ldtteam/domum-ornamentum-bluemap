@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.ldtteam.domumornamentumbluemap.mixin",
+  "minVersion": "${mixin_version}",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "bluemap.ResourceModelBuilderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "${mod_id}.mixin.refmap.json"
+}
