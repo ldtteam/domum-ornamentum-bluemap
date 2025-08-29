@@ -44,3 +44,4 @@ bin/
 ### (Neo)forge files ###
 run
 runs
+.cache
