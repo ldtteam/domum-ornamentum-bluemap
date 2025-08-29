@@ -1,30 +1,20 @@
 package com.ldtteam.domumornamentumbluemap.entity;
 
-import de.bluecolored.bluemap.core.world.block.entity.BlockEntity;
+import de.bluecolored.bluemap.core.world.mca.blockentity.MCABlockEntity;
+import de.bluecolored.bluenbt.NBTName;
 
 import java.util.Map;
 
 /**
  * Block entity definition for Domum materially retexturable blocks.
  */
-public class MateriallyTexturedBlockEntity extends BlockEntity
+public class MateriallyTexturedBlockEntity extends MCABlockEntity
 {
     /**
      * The extracted texture data from the original block entity.
      */
-    private final Map<String, String> textureData;
-
-    /**
-     * Default constructor.
-     *
-     * @param raw the raw map of texture data.
-     */
-    @SuppressWarnings("unchecked")
-    public MateriallyTexturedBlockEntity(final Map<String, Object> raw)
-    {
-        super(raw);
-        this.textureData = (Map<String, String>) raw.getOrDefault("textureData", Map.of());
-    }
+    @NBTName("textureData")
+    private Map<String, String> textureData;
 
     /**
      * Get the texture data from the block entity.
