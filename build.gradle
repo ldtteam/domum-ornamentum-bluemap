@@ -2,7 +2,6 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '6.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = mod_version
@@ -27,7 +26,7 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
@@ -35,8 +34,6 @@ configurations {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
     implementation(fg.deobf("com.ldtteam:domum_ornamentum:${project.domum_ornamentum_version}:universal")) {
         transitive = false
@@ -46,19 +43,11 @@ dependencies {
         transitive = false
     }
 
-    compileOnly(fg.deobf("de.bluecolored.bluemap:BlueMapAPI:${project.bluemap_api_version}"))
-    compileOnly(fg.deobf("de.bluecolored.bluemap:BlueMapCore:${project.bluemap_version}"))
+    compileOnly(fg.deobf("de.bluecolored:bluemap-api:${project.bluemap_api_version}"))
+    compileOnly(fg.deobf("de.bluecolored:bluemap-core:${project.bluemap_version}"))
+    compileOnly(fg.deobf("de.bluecolored:bluenbt:${project.bluemap_nbt_version}"))
+    compileOnly(fg.deobf('com.flowpowered:flow-math:1.0.3'))
     runtimeOnly(fg.deobf("curse.maven:bluemap-406463:${project.bluemap_curse_file_version}"))
-
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")) {
-        jarJar.ranged(it, "[0.5.0,)")
-    }
-}
-
-mixin {
-    add sourceSets.main, "${mod_id}.mixin.refmap.json"
-    config "${mod_id}.mixin.server.json"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -79,11 +68,10 @@ tasks.withType(ProcessResources).configureEach {
                              mod_description                      : mod_description,
                              mod_issue_tracker_url                : mod_issue_tracker_url,
                              dependencies_domum_ornamentum_version: domum_ornamentum_version,
-                             dependencies_bluemap_version         : bluemap_version,
-                             mixin_version                        : mixin_version]
+                             dependencies_bluemap_version         : bluemap_version]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', 'domumornamentumbluemap.mixin.server.json']) {
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties
     }
 }
@@ -155,7 +143,6 @@ minecraft {
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
         }
 
         gameTestServer {
