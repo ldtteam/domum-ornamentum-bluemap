@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "domum_ornamentum:block/framed_light/four_light",
+      "renderer": "domum_ornamentum:materially_retexturable"
+    }
+  }
+}

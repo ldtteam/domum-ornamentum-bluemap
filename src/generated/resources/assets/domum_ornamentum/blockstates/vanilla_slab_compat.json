@@ -1,0 +1,31 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "domum_ornamentum:block/slab/top",
+        "renderer": "domum_ornamentum:materially_retexturable"
+      },
+      "when": {
+        "type": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "domum_ornamentum:block/slab/bottom",
+        "renderer": "domum_ornamentum:materially_retexturable"
+      },
+      "when": {
+        "type": "bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "domum_ornamentum:block/slab/double",
+        "renderer": "domum_ornamentum:materially_retexturable"
+      },
+      "when": {
+        "type": "double"
+      }
+    }
+  ]
+}

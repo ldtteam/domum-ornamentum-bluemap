@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "domum_ornamentum:block/timber_frame/dynamic_timberframe",
+      "renderer": "domum_ornamentum:materially_retexturable"
+    }
+  }
+}
