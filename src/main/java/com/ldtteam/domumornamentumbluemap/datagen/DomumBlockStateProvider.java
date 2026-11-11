@@ -14,14 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +50,7 @@ public class DomumBlockStateProvider implements DataProvider
         {
             futures[i] = saveBlockState(allBlockStates.get(i).getKey(), allBlockStates.get(i).getValue(), output);
         }
-        return CompletableFuture.allOf(futures).thenRun(this::blueMapPackCopy);
+        return CompletableFuture.allOf(futures);
     }
 
     @Override
@@ -69,7 +64,11 @@ public class DomumBlockStateProvider implements DataProvider
     {
         try
         {
-            final Path outputPath = packOutput.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(key.getNamespace()).resolve(key.getPath());
+            final Path outputPath = packOutput.getOutputFolder(PackOutput.Target.REPORTS)
+                .resolve(Constants.BLUEMAP_PACK_FOLDER)
+                .resolve("assets")
+                .resolve(key.getNamespace())
+                .resolve(key.getPath());
 
             final JsonElement jsonElement = JsonParser.parseReader(value.openAsReader());
             if (!jsonElement.isJsonObject())
@@ -106,27 +105,6 @@ public class DomumBlockStateProvider implements DataProvider
         catch (Exception e)
         {
             return CompletableFuture.failedFuture(e);
-        }
-    }
-
-    private void blueMapPackCopy()
-    {
-        try
-        {
-            final Path sourceDirectory = Paths.get(String.format("../../src/datagen/generated/%s/assets", Constants.MOD_ID));
-            final Path targetDirectory = Paths.get("./../client/config/bluemap/packs/local/assets");
-            Files.createDirectories(targetDirectory);
-
-            Files.writeString(targetDirectory.getParent().resolve("pack.mcmeta"),
-                "{\"pack\":{\"description\":{\"text\":\"Local copy of assets\"},\"pack_format\":48}}",
-                StandardOpenOption.WRITE,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
-            FileUtils.copyDirectory(sourceDirectory.toFile(), targetDirectory.toFile());
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
         }
     }
 }

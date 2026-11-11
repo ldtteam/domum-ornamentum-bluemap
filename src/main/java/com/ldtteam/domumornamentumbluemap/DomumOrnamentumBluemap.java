@@ -1,6 +1,7 @@
 package com.ldtteam.domumornamentumbluemap;
 
 import com.ldtteam.domumornamentumbluemap.datagen.DomumBlockStateProvider;
+import com.ldtteam.domumornamentumbluemap.pack.BlueMapPackInstaller;
 import com.ldtteam.domumornamentumbluemap.registry.MateriallyTexturedBlockEntityType;
 import com.ldtteam.domumornamentumbluemap.registry.MateriallyTexturedBlockRendererType;
 import de.bluecolored.bluemap.core.map.hires.block.BlockRendererType;
@@ -9,6 +10,7 @@ import net.minecraft.server.packs.PackType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
 @Mod(Constants.MOD_ID)
 public class DomumOrnamentumBluemap
@@ -17,6 +19,11 @@ public class DomumOrnamentumBluemap
     {
         BlockEntityType.REGISTRY.register(new MateriallyTexturedBlockEntityType());
         BlockRendererType.REGISTRY.register(new MateriallyTexturedBlockRendererType());
+
+        if (!DatagenModLoader.isRunningDataGen())
+        {
+            BlueMapPackInstaller.install();
+        }
 
         modBus.addListener(this::dataGeneratorSetup);
     }
